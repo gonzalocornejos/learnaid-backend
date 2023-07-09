@@ -10,9 +10,9 @@
         {
         }
 
-        public DbSet<Survey> Survey { get; set; }
+        public DbSet<Usuario> Usuario{ get; set; }
 
-        public DbSet<User> User { get; set; }
+        public DbSet<EjercicioAdaptado> EjercicioAdaptado { get; set; }
 
         /// <summary>
         ///     Se utiliza para la construccion de los modelos con Entity Framework.
@@ -22,18 +22,16 @@
         /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Survey>()
+            modelBuilder.Entity<Usuario>()
                 .Property(b => b.Id)
                 .IsRequired()
                 .ValueGeneratedNever();
 
-            modelBuilder.Entity<Survey>()
-               .Property(b => b.OptionsList)
-               .HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<List<string>>(v)
-                );
+            modelBuilder.Entity<EjercicioAdaptado>()
+               .Property(b => b.Id)
+               .IsRequired()
+               .ValueGeneratedNever();
         }
     }
 }
-}
+

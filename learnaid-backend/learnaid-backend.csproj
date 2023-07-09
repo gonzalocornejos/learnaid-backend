@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>learnaid_backend</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,14 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\Controllers\" />
-    <Folder Include="Core\DataTransferObjects\" />
-    <Folder Include="Core\Exceptions\" />
-    <Folder Include="Core\Integrations\" />
-    <Folder Include="Core\Models\" />
     <Folder Include="Core\Support\" />
-    <Folder Include="Core\Services\" />
-    <Folder Include="Core\Repository\" />
     <Folder Include="Configuration\" />
     <Folder Include="Data\Interface\" />
     <Folder Include="Data\Migrations\" />
