@@ -28,7 +28,7 @@ namespace learnaid_backend.Core.Controllers
         /// <response code="400">Si los parametros se enviaron incorrectamente</response>
         /// <response code="500">En el caso de haber un problema interno en el codigo</response>
         [HttpPost]
-        [Route("adaptar-ejercicio/{userid]")]
+        [Route("adaptar-ejercicio/{userid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

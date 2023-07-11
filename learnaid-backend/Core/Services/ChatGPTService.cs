@@ -7,7 +7,7 @@ namespace learnaid_backend.Core.Services
     {
         public async Task<EjercicioAdaptadoDTO> AdaptarEjercicio(EjercicioPorAdaptarDTO ejercicio)
         {
-            var respuesta =new EjercicioAdaptadoDTO(ejercicio);
+            var respuesta = new EjercicioAdaptadoDTO(ejercicio);
             return respuesta;
         }
     }

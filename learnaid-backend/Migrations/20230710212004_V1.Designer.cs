@@ -12,8 +12,8 @@ using learnaid_backend.Data;
 namespace learnaid_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230702140950_PrimeraMigracion")]
-    partial class PrimeraMigracion
+    [Migration("20230710212004_V1")]
+    partial class V1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,10 @@ namespace learnaid_backend.Migrations
             modelBuilder.Entity("learnaid_backend.Core.Models.EjercicioAdaptado", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Consigna")
                         .IsRequired()
@@ -45,7 +48,7 @@ namespace learnaid_backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsuarioId")
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -58,7 +61,10 @@ namespace learnaid_backend.Migrations
             modelBuilder.Entity("learnaid_backend.Core.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -91,9 +97,13 @@ namespace learnaid_backend.Migrations
 
             modelBuilder.Entity("learnaid_backend.Core.Models.EjercicioAdaptado", b =>
                 {
-                    b.HasOne("learnaid_backend.Core.Models.Usuario", null)
+                    b.HasOne("learnaid_backend.Core.Models.Usuario", "Usuario")
                         .WithMany("Ejercicios")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("learnaid_backend.Core.Models.Usuario", b =>

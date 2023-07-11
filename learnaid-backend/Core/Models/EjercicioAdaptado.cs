@@ -19,7 +19,7 @@
             Ejercicio = dto.Ejercicio;
             Fecha = dto.Fecha;
         }
-        public EjercicioAdaptado(EjercicioPorAdaptarDTO dto)
+        public EjercicioAdaptado(EjercicioPorAdaptarDTO dto) : this()
         {
             Titulo = dto.Titulo;
             Consigna = dto.Consigna;

@@ -16,18 +16,21 @@ namespace learnaid_backend.Core.Repository
             public async Task<Usuario> GetUsuarioByEmail(string email)
         {
             return await _dbContext.Usuario
+                .Include(e => e.Ejercicios)
                 .SingleOrDefaultAsync(usuario => usuario.Email == email);
         }
 
         public async Task<Usuario> GetUsuarioById(int id)
         {
             return await _dbContext.Usuario
+                .Include(e => e.Ejercicios)
                 .SingleOrDefaultAsync(usuario => usuario.Id == id);
         }
 
         public async Task<List<Usuario>> GetUsuarios()
         {
             return await _dbContext.Usuario
+                .Include(e => e.Ejercicios)
                 .ToListAsync();
         }
 

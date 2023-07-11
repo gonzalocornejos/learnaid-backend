@@ -18,12 +18,14 @@ namespace learnaid_backend.Core.Repository
         public async Task<EjercicioAdaptado> GetAdaptadoById(int id)
         {
             return await _dbContext.EjercicioAdaptado
+                .Include(u => u.Usuario)
                 .SingleOrDefaultAsync(ejercicio => ejercicio.Id == id);
         }
 
         public async Task<List<EjercicioAdaptado>> GetAdaptados()
         {
             return await _dbContext.EjercicioAdaptado
+                .Include(u => u.Usuario)
                 .ToListAsync();
         }
 

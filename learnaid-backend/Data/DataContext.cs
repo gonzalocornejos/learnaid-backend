@@ -24,13 +24,12 @@
         {
             modelBuilder.Entity<Usuario>()
                 .Property(b => b.Id)
-                .IsRequired()
-                .ValueGeneratedNever();
+                .IsRequired();
 
             modelBuilder.Entity<EjercicioAdaptado>()
                .Property(b => b.Id)
-               .IsRequired()
-               .ValueGeneratedNever();
+               .IsRequired();
+
         }
     }
 }

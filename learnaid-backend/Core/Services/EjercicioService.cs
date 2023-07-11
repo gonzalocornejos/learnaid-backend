@@ -14,11 +14,12 @@ namespace learnaid_backend.Core.Services
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IChatGPTService _chatgptService; 
 
-        public EjercicioService(IGenericRepository genericRepository, IAdaptadoRepository adaptadoRepository, IUsuarioRepository usuarioRepository)
+        public EjercicioService(IGenericRepository genericRepository, IAdaptadoRepository adaptadoRepository, IUsuarioRepository usuarioRepository, IChatGPTService chatGPTService)
         {
             _genericRepository = genericRepository;
             _adaptadoRepository = adaptadoRepository;
             _usuarioRepository = usuarioRepository;
+            _chatgptService = chatGPTService;
         }
 
 

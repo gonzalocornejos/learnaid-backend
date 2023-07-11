@@ -26,7 +26,7 @@
             Profesion = dto.Profesion;
             Foto = dto.Foto;
         }
-        public Usuario(CrearUsuarioDTO dto)
+        public Usuario(CrearUsuarioDTO dto) : this()
         {
             Nombre = dto.Nombre;
             Apellido = dto.Apellido;

@@ -25,7 +25,10 @@ namespace learnaid_backend.Migrations
             modelBuilder.Entity("learnaid_backend.Core.Models.EjercicioAdaptado", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Consigna")
                         .IsRequired()
@@ -55,7 +58,10 @@ namespace learnaid_backend.Migrations
             modelBuilder.Entity("learnaid_backend.Core.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Apellido")
                         .IsRequired()

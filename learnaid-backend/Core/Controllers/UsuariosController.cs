@@ -56,7 +56,7 @@ namespace learnaid_backend.Core.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> EditarUsuario(EditarUsuarioDTO editarUsuarioDTO)
+        public async Task<IActionResult> EditarUsuario([FromBody]EditarUsuarioDTO editarUsuarioDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -183,7 +183,7 @@ namespace learnaid_backend.Core.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Loguearse(LoguearseDTO credenciales)
+        public async Task<IActionResult> Loguearse([FromBody] LoguearseDTO credenciales)
         {
             if (!ModelState.IsValid)
             {
