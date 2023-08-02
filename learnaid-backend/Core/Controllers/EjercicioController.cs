@@ -1,7 +1,9 @@
 ﻿using learnaid_backend.Core.DataTransferObjects.Ejercicio;
+using learnaid_backend.Core.Exceptions;
 using learnaid_backend.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace learnaid_backend.Core.Controllers
 {
@@ -38,7 +40,8 @@ namespace learnaid_backend.Core.Controllers
             {
                 return BadRequest("Parametros enviados incorrectamente");
             }
-            var respuesta = await _ejercicioService.AdaptarEjercicio(ejercicio,userid);
+            //var respuesta = await _ejercicioService.AdaptarEjercicio(ejercicio,userid);
+            var respuesta = await _ejercicioService.AdaptarEjercicioPorPartes(ejercicio, userid);
             return Ok(respuesta);
         }
 
@@ -146,5 +149,29 @@ namespace learnaid_backend.Core.Controllers
             return Ok(respuesta);
         }
 
+        /// <summary>
+        ///     Genera un pdf del ejercicio
+        /// </summary>
+        /// <returns>
+        ///     Pdf del ejercicio
+        /// </returns>
+        /// <response code="204">Si se creo el pdf</response>
+        /// <response code="400">Si el los paramtros son incorrectos</response>
+        /// <response code="500">En el caso de haber un problema interno en el codigo</response>
+        [HttpGet]
+        [Route("pdf/{userid}/{ejercicioid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<FileResult> GetPdfEjercicio([FromRoute,Required] int ejercicioid, [FromRoute,Required] int userid)
+        {
+            var respuesta = await _ejercicioService.GetPdfEjercicio(ejercicioid,userid);
+            if (respuesta == null)
+            {
+                throw new AppException("Ejercicio invalido", HttpStatusCode.NotFound);
+            }
+            var res = File(respuesta, "application/pdf", "ejercicio.pdf");
+            return res;
+        }
     }
 }

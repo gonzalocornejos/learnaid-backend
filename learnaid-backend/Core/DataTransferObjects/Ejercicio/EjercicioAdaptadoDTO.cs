@@ -25,6 +25,14 @@
             Ejercicio = ejercicioEntity.Ejercicio;
             Fecha = new DateTime();
         }
+        public EjercicioAdaptadoDTO(string titulo, string consigna, string ejercicio)
+        {
+            Titulo = titulo;
+            Consigna = consigna;
+            Ejercicio = ejercicio;
+            Fecha = new DateTime();
+        }
+       
         public EjercicioAdaptado toEntity()
         {
             return new EjercicioAdaptado(this);

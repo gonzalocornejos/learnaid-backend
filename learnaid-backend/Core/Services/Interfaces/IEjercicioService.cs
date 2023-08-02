@@ -1,4 +1,6 @@
-﻿using learnaid_backend.Core.DataTransferObjects.Ejercicio;
+﻿using iText.Layout;
+using learnaid_backend.Core.DataTransferObjects.Ejercicio;
+using Microsoft.AspNetCore.Mvc;
 
 namespace learnaid_backend.Core.Services.Interfaces
 {
@@ -10,6 +12,13 @@ namespace learnaid_backend.Core.Services.Interfaces
         /// <param name="ejercicio">ejercicio a adpatar</param>
         /// <param name="userid">id del usuario que va a adaptar ejercicio</param>
         Task<EjercicioAdaptadoDTO> AdaptarEjercicio(EjercicioPorAdaptarDTO ejercicio, int userid);
+
+        /// <summary>
+        ///     Adapta un ejerciio por partes
+        /// </summary>
+        /// <param name="ejercicio">ejercicio a adpatar</param>
+        /// <param name="userid">id del usuario que va a adaptar ejercicio</param>
+        Task<EjercicioAdaptadoDTO> AdaptarEjercicioPorPartes(EjercicioPorAdaptarDTO ejercicio, int userid);
 
         /// <summary>
         ///     Busca todos los ejercicios
@@ -37,5 +46,12 @@ namespace learnaid_backend.Core.Services.Interfaces
         /// <param name="id">id del ejercicio a eliminar</param>
         /// <param name="userid">id del usuario</param>
         Task EliminarEjercicio(int id, int userid);
+
+        /// <summary>
+        ///     Genera un pdf del ejercicio
+        /// </summary>
+        /// <param name="ejercicioid">ejercicio a hacer pdf</param>
+        /// <param name="userid">id del usuario</param>
+        Task<Stream> GetPdfEjercicio(int ejercicioid, int userid);
     }
 }

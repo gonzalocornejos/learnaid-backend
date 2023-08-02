@@ -1,3 +1,8 @@
+using learnaid_backend.Configuration;
+using learnaid_backend.Core.Integrations.iText.Interfaces;
+using learnaid_backend.Core.Integrations.iText;
+using learnaid_backend.Core.Integrations.OpenAI;
+using learnaid_backend.Core.Integrations.OpenAI.Interfaces;
 using learnaid_backend.Core.Middleware;
 using learnaid_backend.Core.Repository;
 using learnaid_backend.Core.Repository.Interfaces;
@@ -14,6 +19,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.Configure<OpenAIConfiguration>(builder.Configuration.GetSection("OpenAI"));
 builder.Services.AddControllers();
 
 
@@ -55,6 +62,8 @@ services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 services.AddScoped<IAdaptadoRepository, AdaptadoRepository>();
 
 // Integrations
+services.AddScoped<IOpenAIAPI, OpenAIAPI>();
+services.AddScoped<IiText, IText>();
 
 // AutoMapper
 
