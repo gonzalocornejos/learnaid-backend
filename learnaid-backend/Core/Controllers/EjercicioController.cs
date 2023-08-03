@@ -166,11 +166,13 @@ namespace learnaid_backend.Core.Controllers
         public async Task<FileResult> GetPdfEjercicio([FromRoute,Required] int ejercicioid, [FromRoute,Required] int userid)
         {
             var respuesta = await _ejercicioService.GetPdfEjercicio(ejercicioid,userid);
-            if (respuesta == null)
+            var ej = _ejercicioService.GetEjercicioById(ejercicioid);
+            if (respuesta == null || ej == null)
             {
                 throw new AppException("Ejercicio invalido", HttpStatusCode.NotFound);
             }
-            var res = File(respuesta, "application/pdf", "ejercicio.pdf");
+            string nombre = _ejercicioService.GetNombrePdf(ej.Result.Titulo);
+            var res = File(respuesta, "application/pdf", nombre);
             return res;
         }
     }

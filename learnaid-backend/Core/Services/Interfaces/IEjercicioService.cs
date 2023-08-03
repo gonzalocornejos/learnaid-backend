@@ -53,5 +53,11 @@ namespace learnaid_backend.Core.Services.Interfaces
         /// <param name="ejercicioid">ejercicio a hacer pdf</param>
         /// <param name="userid">id del usuario</param>
         Task<Stream> GetPdfEjercicio(int ejercicioid, int userid);
+
+        /// <summary>
+        ///     Genera un nombre para el pdf del ejercicio
+        /// </summary>
+        /// <param name="ejercicioid">ejercicio a hacer pdf</param>
+        string GetNombrePdf(string titulo);
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using iText.Kernel.Font;
 using iText.IO.Font.Constants;
 using iText.Layout.Properties;
+using System.Text.RegularExpressions;
 
 namespace learnaid_backend.Core.Integrations.iText
 {
@@ -25,40 +26,47 @@ namespace learnaid_backend.Core.Integrations.iText
             var doc = new Document(pdfDocument, PageSize.A4);
 
             PdfFont font = PdfFontFactory.CreateFont();
-            // Agregar Titulo
-            doc.Add(new Paragraph(ejercicio.Titulo)
-                        .SetFontSize(20)
-                        .SetHorizontalAlignment(HorizontalAlignment.CENTER));
-            doc.Add(new Paragraph(ejercicio.Consigna)
-                        .SetFontSize(16));
-            doc.Add(new Paragraph(ejercicio.Ejercicio)
-                        .SetFontSize(16)
-                        .SetMultipliedLeading((float)1.5));
+            // Agregar Texto
+            doc.Add(CrearParrafo(ejercicio.Titulo,false).SetHorizontalAlignment(HorizontalAlignment.CENTER));
+            doc.Add(CrearParrafo(ejercicio.Consigna,true));
+            doc.Add(CrearParrafo(ejercicio.Ejercicio,false));
 
-            /*Paragraph titulo = new Paragraph();
-            string[] words = ejercicio.Titulo.Split(' ');
-
-            foreach(string word in words)
-            {
-                if (word.ToUpper() == word)
-                {
-                    titulo.Add(word);
-                } else
-                {
-                    titulo.Add(word);
-                }
-                titulo.Add(" ");
-            }
-            doc.Add(titulo);*/
 
             doc.Close();
-
-            //byte[] byteStream = ms.ToArray();
-            //ms.Flush();
-            //ms.Write(byteStream,0,byteStream.Length);
             ms.Position = 0;
 
             return ms;
+        }
+
+        public Paragraph CrearParrafo(string texto,bool isUnderline)
+        {
+            var respuesta = new Paragraph()
+                        .SetFontSize(16)
+                        .SetMultipliedLeading((float)1.5);
+            string[] words = texto.Split(" ");
+
+            foreach(var word in words)
+            {
+                Text w = new Text(word);
+                if (isUnderline)
+                {
+                    w.SetUnderline();
+                }
+                if(word.ToUpper() == word && Regex.IsMatch(word, @"^[a-zA-Z:]+$") && word != "I")
+                {
+                    respuesta.Add(w.SetBold());
+                } else
+                {
+                    respuesta.Add(w);
+                }
+                w = new Text(" ");
+                if (isUnderline)
+                {
+                    w.SetUnderline();
+                }
+                respuesta.Add(w);
+            }
+            return respuesta;
         }
     }
 }

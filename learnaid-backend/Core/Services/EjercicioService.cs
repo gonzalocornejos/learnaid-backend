@@ -36,6 +36,7 @@ namespace learnaid_backend.Core.Services
                 throw new AppException("Usuario invalido", HttpStatusCode.NotFound);
             }
             var adaptado = await _chatgptService.AdaptarEjercicio(ejercicio, usuario.Profesion);
+            adaptado.Fecha = DateTime.Today;
             usuario.CrearEjercicio(adaptado);
             await _genericRepository.GuardarCambiosAsync();
             return adaptado;
@@ -49,6 +50,7 @@ namespace learnaid_backend.Core.Services
                 throw new AppException("Usuario invalido", HttpStatusCode.NotFound);
             }
             var adaptado = await _chatgptService.AdaptarEjercicioPorPartes(ejercicio, usuario.Profesion);
+            adaptado.Fecha = DateTime.Today;
             usuario.CrearEjercicio(adaptado);
             await _genericRepository.GuardarCambiosAsync();
             return adaptado;
@@ -121,6 +123,14 @@ namespace learnaid_backend.Core.Services
             }
             var res = _iTextIntegration.GenerarPdF(ej);
             return res;
+        }
+
+        public string GetNombrePdf(string titulo)
+        {
+            var respuesta = titulo.Replace(" ", "");
+            respuesta = respuesta.Replace("/", "-");
+            respuesta = respuesta + ".pdf";
+            return respuesta;
         }
     }
 }
