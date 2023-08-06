@@ -26,14 +26,14 @@
             Profesion = dto.Profesion;
             Foto = dto.Foto;
         }
-        public Usuario(CrearUsuarioDTO dto) : this()
+        public Usuario(CrearUsuarioDTO dto, string foto = "foto") : this()
         {
             Nombre = dto.Nombre;
             Apellido = dto.Apellido;
             Email = dto.Email;
             Contraseña = dto.Contraseña;
             Profesion = dto.Profesion;
-            Foto = dto.Foto;
+            Foto = foto;
         }
         public UsuarioDTO ToDTO()
         {

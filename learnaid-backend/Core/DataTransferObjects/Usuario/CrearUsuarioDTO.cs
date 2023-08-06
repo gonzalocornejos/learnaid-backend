@@ -7,7 +7,7 @@
         public string Email { get; set; }
         public string Contraseña { get; set; }
         public string Profesion { get; set; }
-        public string Foto { get; set; }
+        public IFormFile Foto { get; set; }
 
     }
 }

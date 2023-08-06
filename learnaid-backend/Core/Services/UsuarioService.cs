@@ -76,12 +76,14 @@ namespace learnaid_backend.Core.Services
             return respuesta;
         }
 
-        public async Task Loguearse(LoguearseDTO credenciales)
+        public async Task<UsuarioDTO> Loguearse(LoguearseDTO credenciales)
         {
             if(!await _usuarioRepository.VerificarCredencialesLogueo(credenciales))
             {
                 throw new AppException("Credenciales no validas", HttpStatusCode.Unauthorized);
             }
+            var resultado = await GetUsuarioByEmail(credenciales.Email);
+            return resultado;
         }
     }
 }

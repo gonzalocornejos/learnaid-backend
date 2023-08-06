@@ -21,6 +21,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 builder.Services.Configure<OpenAIConfiguration>(builder.Configuration.GetSection("OpenAI"));
+builder.Services.Configure<CloudinaryConfiguration>(builder.Configuration.GetSection("Cloudinary"));
 builder.Services.AddControllers();
 
 

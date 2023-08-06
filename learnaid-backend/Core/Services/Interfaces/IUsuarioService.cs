@@ -26,7 +26,7 @@ namespace learnaid_backend.Core.Services.Interfaces
         ///     Crean un usuario nuevo en la base de datos
         /// </summary>
         /// <param name="credenciales">usuario a crear</param>
-        Task Loguearse(LoguearseDTO credenciales);
+        Task<UsuarioDTO> Loguearse(LoguearseDTO credenciales);
 
         /// <summary>
         ///     Busca un usuario por su id
