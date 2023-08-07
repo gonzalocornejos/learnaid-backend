@@ -2,5 +2,6 @@
 {
     public interface ICloudinaryAPI
     {
+        public Task<string> UploadImage(Stream stream, string nombre);
     }
 }

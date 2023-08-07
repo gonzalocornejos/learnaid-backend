@@ -189,8 +189,8 @@ namespace learnaid_backend.Core.Controllers
             {
                 return BadRequest("Parametros enviados incorrectamente");
             }
-            await _usuarioService.Loguearse(credenciales);
-            return Ok();
+            var respuesta = await _usuarioService.Loguearse(credenciales);
+            return Ok(respuesta);
         }
     }
 }

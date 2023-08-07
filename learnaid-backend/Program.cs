@@ -12,6 +12,8 @@ using learnaid_backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using learnaid_backend.Core.Integrations.CloudinaryAPI.Interfaces;
+using learnaid_backend.Core.Integrations.CloudinaryAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +67,7 @@ services.AddScoped<IAdaptadoRepository, AdaptadoRepository>();
 // Integrations
 services.AddScoped<IOpenAIAPI, OpenAIAPI>();
 services.AddScoped<IiText, IText>();
+services.AddScoped<ICloudinaryAPI, CloudinaryAPI>();
 
 // AutoMapper
 

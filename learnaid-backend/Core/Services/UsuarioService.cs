@@ -1,5 +1,6 @@
 ﻿using learnaid_backend.Core.DataTransferObjects.Usuario;
 using learnaid_backend.Core.Exceptions;
+using learnaid_backend.Core.Integrations.CloudinaryAPI.Interfaces;
 using learnaid_backend.Core.Models;
 using learnaid_backend.Core.Repository.Interfaces;
 using learnaid_backend.Core.Services.Interfaces;
@@ -11,17 +12,21 @@ namespace learnaid_backend.Core.Services
     {
         private readonly IGenericRepository _genericRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly ICloudinaryAPI _cloudinaryService;
 
-        public UsuarioService(IGenericRepository genericRepository, IUsuarioRepository usuarioRepository)
+        public UsuarioService(IGenericRepository genericRepository, IUsuarioRepository usuarioRepository, ICloudinaryAPI cloudinaryService)
         {
             _genericRepository = genericRepository;
             _usuarioRepository = usuarioRepository;
+            _cloudinaryService = cloudinaryService;
         }
 
 
         public async Task CrearUsuario(CrearUsuarioDTO credenciales)
         {
-            var usuario = new Usuario(credenciales);
+            var nombre = credenciales.Foto.FileName;
+            var imagen = await _cloudinaryService.UploadImage(credenciales.Foto.OpenReadStream(),nombre);
+            var usuario = new Usuario(credenciales,imagen);
             await _genericRepository.Agregar(usuario);
             await _genericRepository.GuardarCambiosAsync();
         }
