@@ -58,12 +58,13 @@
             var adaptacionParcial = ejercicio;
             foreach(var adaptacion in ejercicio.Adaptaciones)
             {
-                if(adaptacion == "Simplificar Texto")
+                if(adaptacion == "Simplificar ejercicio")
                 {
                     respuesta = await SimplificarTexto(adaptacionParcial, profesion, edad, idioma);
                     adaptacionParcial.Consigna = respuesta.Consigna;
                     adaptacionParcial.Ejercicio = respuesta.Ejercicio;
-                } else if (adaptacion == "Agregar opciones multiples"){
+                } else if (adaptacion == "Seleccion multiple ")
+                {
                     respuesta = await AgregarMultipleChoice(adaptacionParcial,profesion,edad, idioma);
                     adaptacionParcial.Consigna = respuesta.Consigna;
                     adaptacionParcial.Ejercicio = respuesta.Ejercicio;
