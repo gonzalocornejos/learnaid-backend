@@ -6,6 +6,7 @@ namespace learnaid_backend.Core.Integrations.iText.Interfaces
 {
     public interface IiText
     {
-        public Stream GenerarPdF(EjercicioAdaptado ejercicio);
+        public Stream GenerarPdF(EjercitacionAdaptada ejercitacion);
+        public Stream GenerarPdFOriginal(EjercitacionNoAdaptada ejercitacion);
     }
 }

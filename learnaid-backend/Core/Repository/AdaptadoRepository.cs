@@ -14,30 +14,45 @@ namespace learnaid_backend.Core.Repository
             _dbContext = dbContext;
         }
 
-
-        public async Task<EjercicioAdaptado> GetAdaptadoById(int id)
+        public Task<EjercicioAdaptado> GetAdaptadoById(int id)
         {
-            return await _dbContext.EjercicioAdaptado
-                .Include(u => u.Usuario)
-                .SingleOrDefaultAsync(ejercicio => ejercicio.Id == id);
+            throw new NotImplementedException();
         }
 
-        public async Task<List<EjercicioAdaptado>> GetAdaptados()
+        public Task<List<EjercicioAdaptado>> GetAdaptados()
         {
-            return await _dbContext.EjercicioAdaptado
-                .Include(u => u.Usuario)
-                .ToListAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<List<EjercicioAdaptado>> GetAdaptadosByUser(int userid)
+        public Task<List<EjercicioAdaptado>> GetAdaptadosByUser(int userid)
         {
-            var result = new List<EjercicioAdaptado>();
-            var ejercicios = await GetAdaptados();
-            ejercicios.ForEach(ejercicio =>
-                {if (ejercicio.Usuario.Id == userid)
-                        result.Add(ejercicio);
-                });
-            return result;
+            throw new NotImplementedException();
         }
+
+        /*
+            public async Task<EjercicioAdaptado> GetAdaptadoById(int id)
+            {
+                return await _dbContext.EjercicioAdaptado
+                    .Include(u => u.Usuario)
+                    .SingleOrDefaultAsync(ejercicio => ejercicio.Id == id);
+            }
+
+            public async Task<List<EjercicioAdaptado>> GetAdaptados()
+            {
+                return await _dbContext.EjercicioAdaptado
+                    .Include(u => u.Usuario)
+                    .ToListAsync();
+            }
+
+            public async Task<List<EjercicioAdaptado>> GetAdaptadosByUser(int userid)
+            {
+                var result = new List<EjercicioAdaptado>();
+                var ejercicios = await GetAdaptados();
+                ejercicios.ForEach(ejercicio =>
+                    {if (ejercicio.Usuario.Id == userid)
+                            result.Add(ejercicio);
+                    });
+                return result;
+            }*/
     }
 }

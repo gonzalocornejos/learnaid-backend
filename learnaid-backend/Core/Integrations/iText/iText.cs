@@ -15,7 +15,7 @@ namespace learnaid_backend.Core.Integrations.iText
 {
     public class IText : IiText
     {
-        public Stream GenerarPdF(EjercicioAdaptado ejercicio)
+        public Stream GenerarPdF(EjercitacionAdaptada ejercitacion)
         {
             var ms = new MemoryStream();
             Console.WriteLine("Prueba");
@@ -27,10 +27,12 @@ namespace learnaid_backend.Core.Integrations.iText
 
             PdfFont font = PdfFontFactory.CreateFont();
             // Agregar Texto
-            doc.Add(CrearParrafo(ejercicio.Titulo,false).SetHorizontalAlignment(HorizontalAlignment.CENTER));
-            doc.Add(CrearParrafo(ejercicio.Consigna,true));
-            doc.Add(CrearParrafo(ejercicio.Ejercicio,false));
-
+            doc.Add(CrearParrafo(ejercitacion.Titulo,false).SetHorizontalAlignment(HorizontalAlignment.CENTER));
+            foreach(var ejercicio in ejercitacion.Ejercicios)
+            {
+                doc.Add(CrearParrafo(ejercicio.Consigna, true));
+                doc.Add(CrearParrafo(ejercicio.Ejercicio, false));
+            }
 
             doc.Close();
             ms.Position = 0;
@@ -59,6 +61,57 @@ namespace learnaid_backend.Core.Integrations.iText
                 {
                     respuesta.Add(w);
                 }
+                w = new Text(" ");
+                if (isUnderline)
+                {
+                    w.SetUnderline();
+                }
+                respuesta.Add(w);
+            }
+            return respuesta;
+        }
+
+        public Stream GenerarPdFOriginal(EjercitacionNoAdaptada ejercitacion)
+        {
+            var ms = new MemoryStream();
+            Console.WriteLine("Prueba");
+            var pw = new PdfWriter(ms);
+            pw.SetCloseStream(false);
+            pw.SetSmartMode(true);
+            var pdfDocument = new PdfDocument(pw);
+            var doc = new Document(pdfDocument, PageSize.A4);
+
+            PdfFont font = PdfFontFactory.CreateFont();
+            // Agregar Texto
+            doc.Add(CrearParrafoOriginal(ejercitacion.Titulo, false).SetHorizontalAlignment(HorizontalAlignment.CENTER));
+            foreach (var ejercicio in ejercitacion.Ejercicios)
+            {
+                doc.Add(CrearParrafoOriginal(ejercicio.Consigna, true));
+                doc.Add(CrearParrafoOriginal(ejercicio.Texto, false));
+                doc.Add(CrearParrafoOriginal(ejercicio.Ejercicio, false));
+            }
+
+            doc.Close();
+            ms.Position = 0;
+
+            return ms;
+        }
+
+        public Paragraph CrearParrafoOriginal(string texto, bool isUnderline)
+        {
+            var respuesta = new Paragraph()
+                        .SetFontSize(14)
+                        .SetMultipliedLeading((float)1);
+            string[] words = texto.Split(" ");
+
+            foreach (var word in words)
+            {
+                Text w = new Text(word);
+                if (isUnderline)
+                {
+                    w.SetUnderline();
+                }
+                respuesta.Add(w);
                 w = new Text(" ");
                 if (isUnderline)
                 {

@@ -10,7 +10,7 @@
         public string Apellido { get; set; }
         public string Email { get; set; }
         public string Contraseña { get; set; }
-        public List<EjercicioAdaptado> Ejercicios { get; set; } = new List<EjercicioAdaptado>();
+        public List<EjercitacionAdaptada> Ejercicios { get; set; } = new List<EjercitacionAdaptada>();
         public string Profesion { get; set; }
         public string Foto { get; set; }
         private Usuario() { }
@@ -22,7 +22,7 @@
             Apellido = dto.Apellido;
             Email = dto.Email;
             Contraseña = dto.Contraseña;
-            dto.Ejercicios.ToList().ForEach(e => Ejercicios.Add(new EjercicioAdaptado(e)));
+            dto.Ejercicios.ToList().ForEach(e => Ejercicios.Add(new EjercitacionAdaptada(e)));
             Profesion = dto.Profesion;
             Foto = dto.Foto;
         }
@@ -49,9 +49,8 @@
             Foto = dto.Foto;
         }
 
-        public void CrearEjercicio(EjercicioAdaptadoDTO dto)
+        public void CrearEjercitacion(EjercitacionAdaptada ejercicio)
         {
-            var ejercicio = new EjercicioAdaptado(dto);
             Ejercicios.Add(ejercicio);
         }
     }

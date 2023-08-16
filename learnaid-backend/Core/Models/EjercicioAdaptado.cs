@@ -5,26 +5,29 @@
 
     public class EjercicioAdaptado : Entity
     {
-        public string Titulo { get; set; }
         public string Consigna { get; set; }
         public string Ejercicio { get; set; }
-        public DateTime Fecha { get; set; }
-        public Usuario Usuario { get; set; }
+
         public EjercicioAdaptado() { }
         public EjercicioAdaptado(EjercicioAdaptadoDTO dto)
         {
             Id = dto.Id;
-            Titulo = dto.Titulo;
             Consigna = dto.Consigna;
             Ejercicio = dto.Ejercicio;
-            Fecha = dto.Fecha;
+        }
+
+        public EjercicioAdaptado(EjercicioAdaptadoDTO dto, bool esEdit)
+        {
+            if (esEdit)
+            {
+                Consigna = dto.Consigna;
+                Ejercicio = dto.Ejercicio;
+            }
         }
         public EjercicioAdaptado(EjercicioPorAdaptarDTO dto) : this()
         {
-            Titulo = dto.Titulo;
             Consigna = dto.Consigna;
             Ejercicio = dto.Ejercicio;
-            Fecha = DateTime.Now;
         }
         public EjercicioAdaptadoDTO toDTO()
         {

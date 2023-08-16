@@ -30,12 +30,12 @@ namespace learnaid_backend.Core.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CrearUsuario([FromBody]CrearUsuarioDTO credenciales)
+        public async Task<IActionResult> CrearUsuario([FromForm]CrearUsuarioDTO credenciales)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Parametros enviados incorrectamente");
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest("Parametros enviados incorrectamente");
+            //}
             await _usuarioService.CrearUsuario(credenciales);
             return Ok();
         }

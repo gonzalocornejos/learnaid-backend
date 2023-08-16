@@ -34,14 +34,15 @@ namespace learnaid_backend.Core.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AdaptarEjercicio([FromBody] EjercicioPorAdaptarDTO ejercicio, [FromRoute,Required] int userid)
+        public async Task<IActionResult> AdaptarEjercicio([FromBody] EjercitacionNoAdaptadaDTO ejercicio, [FromRoute,Required] int userid)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Parametros enviados incorrectamente");
             }
             //var respuesta = await _ejercicioService.AdaptarEjercicio(ejercicio,userid);
-            var respuesta = await _ejercicioService.AdaptarEjercicioPorPartes(ejercicio, userid);
+            //var respuesta = await _ejercicioService.AdaptarEjercicioPorPartes(ejercicio, userid);
+            var respuesta = await _ejercicioService.AdaptarEjercitacion(ejercicio, userid);
             return Ok(respuesta);
         }
 
@@ -174,6 +175,60 @@ namespace learnaid_backend.Core.Controllers
             string nombre = _ejercicioService.GetNombrePdf(ej.Result.Titulo);
             var res = File(respuesta, "application/pdf", nombre);
             return res;
+        }
+        /// <summary>
+        ///     Genera un pdf del ejercicio original
+        /// </summary>
+        /// <returns>
+        ///     Pdf del ejercicio
+        /// </returns>
+        /// <response code="204">Si se creo el pdf</response>
+        /// <response code="400">Si el los paramtros son incorrectos</response>
+        /// <response code="500">En el caso de haber un problema interno en el codigo</response>
+        [HttpGet]
+        [Route("pdfOriginal/{userid}/{ejercicioid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<FileResult> GetPdfEjercicioOriginal([FromRoute, Required] int ejercicioid, [FromRoute, Required] int userid)
+        {
+            var respuesta = await _ejercicioService.GetPdfEjercicioOriginal(ejercicioid, userid);
+            var ej = _ejercicioService.GetEjercicioById(ejercicioid);
+            if (respuesta == null || ej == null)
+            {
+                throw new AppException("Ejercicio invalido", HttpStatusCode.NotFound);
+            }
+            string nombre = _ejercicioService.GetNombrePdfOriginal(ej.Result.Titulo);
+            var res = File(respuesta, "application/pdf", nombre);
+            return res;
+        }
+
+        /// <summary>
+        ///     Edita un Ejercicio
+        /// </summary>
+        /// <returns>
+        ///     Ejercicio editado.
+        /// </returns>
+        /// <param name="ejercicio">datos del ejercicio a editar</param>
+        /// <param name="userid">id del usuario que va a editar el ejercicio</param>
+        /// <response code="204">Si se edito el ejercicio correctamente</response>
+        /// <response code="400">Si los parametros se enviaron incorrectamente</response>
+        /// <response code="500">En el caso de haber un problema interno en el codigo</response>
+        [HttpPost]
+        [Route("editar-ejercicio/{userid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditarEjercicio([FromBody] EjercitacionAdaptadaDTO ejercicio, [FromRoute, Required] int userid)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Parametros enviados incorrectamente");
+            }
+            //var respuesta = await _ejercicioService.AdaptarEjercicio(ejercicio,userid);
+            //var respuesta = await _ejercicioService.AdaptarEjercicioPorPartes(ejercicio, userid);
+            var respuesta = await _ejercicioService.EditarEjercicio(ejercicio, userid);
+            return Ok(respuesta);
         }
     }
 }

@@ -4,7 +4,6 @@ namespace learnaid_backend.Core.Services.Interfaces
 {
     public interface IChatGPTService
     {
-        public Task<EjercicioAdaptadoDTO> AdaptarEjercicio(EjercicioPorAdaptarDTO ejercicio, string profesion);
-        public Task<EjercicioAdaptadoDTO> AdaptarEjercicioPorPartes(EjercicioPorAdaptarDTO ejercicio, string profesion);
+        public Task<EjercicioAdaptadoDTO> AdaptarEjercicioPorPartes(EjercicioPorAdaptarDTO ejercicio, string profesion, int edad, string idioma);
     }
 }

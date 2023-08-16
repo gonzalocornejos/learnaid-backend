@@ -9,7 +9,7 @@
         public string Apellido { get; set; }
         public string Email { get; set; }
         public string Contraseña { get; set; }
-        public List<EjercicioAdaptadoDTO> Ejercicios { get; set; } = new List<EjercicioAdaptadoDTO>();
+        public List<EjercitacionAdaptadaDTO> Ejercicios { get; set; } = new List<EjercitacionAdaptadaDTO>();
         public string Profesion { get; set; }
         public string Foto { get; set; }
 
@@ -22,7 +22,10 @@
             Apellido = usuarioEntity.Apellido;
             Email = usuarioEntity.Email;
             Contraseña = usuarioEntity.Contraseña;
-            usuarioEntity.Ejercicios.ToList().ForEach(e => Ejercicios.Add(new EjercicioAdaptadoDTO(e)));
+            if(usuarioEntity.Ejercicios != null)
+            {
+                usuarioEntity.Ejercicios.ToList().ForEach(e => Ejercicios.Add(new EjercitacionAdaptadaDTO(e)));
+            }
             Profesion = usuarioEntity.Profesion;
             Foto = usuarioEntity.Foto;
         }

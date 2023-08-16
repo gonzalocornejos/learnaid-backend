@@ -63,6 +63,8 @@ services.AddScoped<IChatGPTService, ChatGPTService>();
 services.AddScoped<IGenericRepository, GenericRepository>();
 services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 services.AddScoped<IAdaptadoRepository, AdaptadoRepository>();
+services.AddScoped<IEjercitacionAdaptadaRepository, EjercitacionAdaptadaRepository>();
+
 
 // Integrations
 services.AddScoped<IOpenAIAPI, OpenAIAPI>();

@@ -36,6 +36,7 @@
     <Folder Include="Core\Support\" />
     <Folder Include="Data\Interface\" />
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
