@@ -24,14 +24,14 @@ namespace learnaid_backend.Core.Integrations.iText
             pw.SetSmartMode(true);
             var pdfDocument = new PdfDocument(pw);
             var doc = new Document(pdfDocument, PageSize.A4);
-
-            PdfFont font = PdfFontFactory.CreateFont();
+            byte[] file = File.ReadAllBytes("C:/Users/gonza/source/repos/learnaid-backend/learnaid-backend/Media/COMIC.TTF");
+            PdfFont font = PdfFontFactory.CreateFont(file,PdfFontFactory.EmbeddingStrategy.FORCE_EMBEDDED);
             // Agregar Texto
-            doc.Add(CrearParrafo(ejercitacion.Titulo,false).SetHorizontalAlignment(HorizontalAlignment.CENTER));
+            doc.Add(CrearParrafo(ejercitacion.Titulo,false).SetHorizontalAlignment(HorizontalAlignment.CENTER).SetFont(font));
             foreach(var ejercicio in ejercitacion.Ejercicios)
             {
-                doc.Add(CrearParrafo(ejercicio.Consigna, true));
-                doc.Add(CrearParrafo(ejercicio.Ejercicio, false));
+                doc.Add(CrearParrafo(ejercicio.Consigna, true).SetFont(font));
+                doc.Add(CrearParrafo(ejercicio.Ejercicio, false).SetFont(font));
             }
 
             doc.Close();

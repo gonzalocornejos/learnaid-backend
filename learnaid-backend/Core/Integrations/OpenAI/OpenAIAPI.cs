@@ -5,6 +5,7 @@
     using learnaid_backend.Core.DataTransferObjects.Ejercicio;
     using Microsoft.Extensions.Options;
     using OpenAI;
+    using OpenAI_API.Models;
     using System.Threading.Tasks;
 
     public class OpenAIAPI : IOpenAIAPI
@@ -58,12 +59,7 @@
             var adaptacionParcial = ejercicio;
             foreach(var adaptacion in ejercicio.Adaptaciones)
             {
-                if(adaptacion == "Simplificar ejercicio")
-                {
-                    respuesta = await SimplificarTexto(adaptacionParcial, profesion, edad, idioma);
-                    adaptacionParcial.Consigna = respuesta.Consigna;
-                    adaptacionParcial.Ejercicio = respuesta.Ejercicio;
-                } else if (adaptacion == "Seleccion multiple ")
+                 if (adaptacion == "Seleccion multiple")
                 {
                     respuesta = await AgregarMultipleChoice(adaptacionParcial,profesion,edad, idioma);
                     adaptacionParcial.Consigna = respuesta.Consigna;
@@ -71,6 +67,11 @@
                 } else if (adaptacion == "Acortar ejercicio")
                 {
                     respuesta = await AcortarEjercicio(adaptacionParcial, profesion, edad, idioma);
+                    adaptacionParcial.Consigna = respuesta.Consigna;
+                    adaptacionParcial.Ejercicio = respuesta.Ejercicio;
+                } else if (adaptacion == "Simplificar ejercicio")
+                {
+                    respuesta = await SimplificarTexto(adaptacionParcial, profesion, edad, idioma);
                     adaptacionParcial.Consigna = respuesta.Consigna;
                     adaptacionParcial.Ejercicio = respuesta.Ejercicio;
                 }
@@ -84,9 +85,10 @@
             // api instance
             var api = new OpenAI_API.OpenAIAPI(_openAIConfiguration.Key);
             var chat = api.Chat.CreateConversation();
+            chat.Model = Model.ChatGPTTurbo;
 
             /// give instruction as System
-            var system = "Sos un " + profesion + " de niños de " + edad + " años. Tenes alumnos con dislexia. Tenes que adaptar ejercicios para ellos. La adaptacion tiene que separar los ejercicios en items individuales .Que haya solo un espacio para completar por ejercicio. Que todas las palabras clave del ejercicio esten en mayusculas para resaltar su importancia. Los ejercicios y preguntas tienen que ser los mismos, no se pueden cambiar. No agreges palabras extra como opciones, ejercicio, preguntas,etc. Agregar tabulaciones a las opciones. Si el ejercicio ya tiene opciones no modificarlas ni agregar nuevas.";
+            var system = "Sos un " + profesion + " de niños de " + edad + " años. Tenes alumnos con dislexia. Tenes que adaptar ejercicios para ellos. Lo que tenes que hacer es leer todo: la consigna, el texto y el ejercicio. Luego tenes que identificar todas las palabras importantes que permitan resolver el ejercicio con mayor facilidad. Aquella que sean importante las escribis en mayusculas. Tambien tenes que separar todos los ejercicios en items individuales. Por ejemplo, a un parrafo donde el alumno tenga que completar dentro de el, separarlo por oraciones individuales. Y numerar todo. No agregues palabras extra como Consigna,Ejercicio o Texto. No modifiques nunca el contenido de las oraciones, no agregues adjetivos o palabras, ni tampoco cambies el contenido de las preguntas.";
             chat.AppendSystemMessage(system);
 
             // give a few examples as user and assistant
@@ -111,10 +113,10 @@
             // api instance
             var api = new OpenAI_API.OpenAIAPI(_openAIConfiguration.Key);
             var chat = api.Chat.CreateConversation();
-
+            chat.Model = Model.ChatGPTTurbo;
             /// give instruction as System
-            var system = "Sos un " + profesion + " de niños de " + edad + " años. Tenes alumnos con dislexia. Tenes que adaptar ejercicios para ellos. La adaptacion tiene que consistir en reducir la cantidad de elementos del ejercicio. No tenes que modificar ningun contenido de nada. Y tampoco tenes que agregar palabaras como Consigna, Ejercicio, Texto, etc. Solo responde con la adaptacion";
-            chat.AppendSystemMessage(system);
+            var system = "Sos un " + profesion + " de niños de " + edad + " años. Tenes alumnos con dislexia. Tenes que adaptar el formato de ejercicios para ellos. Lo que tenes que hacer es leer todo: la consigna, el texto y el ejercicio. Luego tenes que identificar cuales son los ejercicio que tiene que resolver el alumno. Una vez hecho eso, tenes que eliminar la mitad de los ejercicios y dejar solo la otra mitad.Esto puede consistir en eliminar oraciones, o eliminar preguntas, o eliminar ecuaciones, o eliminar parte de un parrafo.Todo depende el contexto.No agregues palabras extra como Consigna, Ejercicio o Texto. No modifiques nunca el contenido de las oraciones, no agregues adjetivos o palabras, ni tampoco cambies el contenido de las preguntas.";
+            chat.AppendSystemMessage(system);  
 
             // give a few examples as user and assistant
             chat.AppendUserInput("Adapta la siguiente consigna: FILL IN THE BLANKS WITH THE VERBS IN THE PAST SIMPLE: ");
@@ -123,8 +125,8 @@
             chat.AppendExampleChatbotOutput("1)What __________ you _____________(do) last Saturday? \n \n \t \t \t a) did, do \n \t \t \t b) did, did \n \t \t \t c) do, did \n \t \t \t d) did, did not \n \n 2)I ______________________(visit) my grandparents. \n \n \t \t \t a) visited \n \t \t \t b) visit \n \t \t \t c) visits \n \t \t \t d) visiting \n \n 3) I ____________________(not go) alone. \n \n \t \t \t a) did not go \n \t \t \t b) don't go \n \t \t \t c) didn't go \n \t \t \t d) not go \n \n 4) My brother _________________(go) with me. \n \n \t \t \t a) went \n \t \t \t b) go \n \t \t \t c) goes \n \t \t \t d) going");
             chat.AppendUserInput("Adapta la siguiente consigna: Resuelva las siguientes ecuaciones:");
             chat.AppendExampleChatbotOutput("RESUELVA la siguiente ecuación: ");
-            chat.AppendUserInput("Adapta el siguiente ejercicio en base a la consigna: Resuelva las siguientes ecuaciones:. El ejercicio es el siguiente: 2 - x = x - 8");
-            chat.AppendExampleChatbotOutput("1) 2 - x = x - 8 \n \t \t \t A) x = -5 \n \t \t \t B) x = 5 \n \t \t \t C) x = -3 \n \t \t \t D) x = 3");
+            chat.AppendUserInput("Adapta el siguiente ejercicio en base a la consigna: Responda las siguientes preguntas:. El ejercicio es el siguiente: ¿Qué órgano de tu cuerpo se encarga de bombear la sangre?¿Cuál es la función principal de los pulmones?¿Qué insecto pasa por una etapa de larva antes de convertirse en adulto?¿Qué parte de la planta absorbe agua y nutrientes del suelo?¿Cómo se llama el proceso en el cual las plantas fabrican su propio alimento utilizando la energía del sol?¿Qué animal es conocido por cambiar de color para camuflarse con su entorno?¿Qué animal es famoso por construir grandes presas de palos y ramas en los ríos?¿Cuál es el órgano más grande de tu cuerpo?¿Qué animal vuela de noche y es conocido por girar la cabeza casi 180 grados?¿Cuál es la función de la piel en nuestro cuerpo?");
+            chat.AppendExampleChatbotOutput("1) ¿Qué órgano bombea sangre?\n2) ¿Cuál es la función principal de los pulmones?\n3) ¿Qué insecto pasa por etapa de larva antes de ser adulto?\n4) ¿Qué parte de la planta absorbe agua y nutrientes?\n5) ¿Cómo se llama el proceso en el cual las plantas fabrican su propio alimento?");
 
             // now let's ask it a question'
 
@@ -138,19 +140,20 @@
             var api = new OpenAI_API.OpenAIAPI(_openAIConfiguration.Key);
             var chat = api.Chat.CreateConversation();
 
+            chat.Model = Model.ChatGPTTurbo;
             /// give instruction as System
-            var system = "Sos un " + profesion + " de niños de " + edad + " años. Tenes alumnos con dislexia. Tenes que adaptar ejercicios para ellos. La adaptacion tiene que consistir en agregar opciones multiples para las respuestas. Las respuestas tienen que ser 2 o 3 si los alumnos son menores a 9 años y 4 si son mayores. Todas las opciones tienen que ser posibles mas alla de que una sea la correcta. La correcta no tiene que estar siempre en la misma ubicacion. Respetar el idioma del ejercicio. No tenes que modificar ningun contenido de nada. Y tampoco tenes que agregar palabaras como Consigna, Ejercicio, Texto, etc. Solo responde con la adaptacion";
+            var system = "Sos un " + profesion + " de niños de " + edad + " años. Tenes alumnos con dislexia. Tenes que adaptar ejercicios para ellos. Lo que tenes que hacer es leer todo: el ejercicio, la consigna y el texto. Luego tenes que identificar las respuestas correctas para cada ejercicio. Luego tenes que agregar opciones multiples debajo de cada ejercicio. Dentro de las opciones tiene que estar la correcta y rellenar las otras con posibles opciones que serian correctas bajo otro contexto. Que la opcion correcta no este siempre en el mismo lugar. No agregues palabras extra como Consigna, Ejercicio o Texto. No modifiques nunca el contenido de las oraciones, no agregues adjetivos o palabras, ni tampoco cambies el contenido de las preguntas.";
             chat.AppendSystemMessage(system);
 
             // give a few examples as user and assistant
             chat.AppendUserInput("Adapta la siguiente consigna: FILL IN THE BLANKS WITH THE VERBS IN THE PAST SIMPLE: ");
             chat.AppendExampleChatbotOutput("FILL IN THE BLANKS WITH THE VERBS IN THE PAST SIMPLE: ");
             chat.AppendUserInput("Adapta el siguiente ejercicio en base a la consigna: FILL IN THE BLANKS WITH THE VERBS IN THE PAST SIMPLE:. El ejercicio es el siguiente: What __________ you _____________(do) last Saturday? I ______________________(visit) my grandparents.I ____________________(not go) alone.My brother _________________(go) with me.");
-            chat.AppendExampleChatbotOutput("1)What __________ you _____________(do) last Saturday? \n 2)I ______________________(visit) my grandparents. \n ");
+            chat.AppendExampleChatbotOutput("1)What __________ you _____________(do) last Saturday? \n \n \t \t \t a) did, do \n \t \t \t b) did, did \n \t \t \t c) do, did \n \t \t \t d) did, did not \n \n 2)I ______________________(visit) my grandparents. \n \n \t \t \t a) visited \n \t \t \t b) visit \n \t \t \t c) visits \n \t \t \t d) visiting \n \n 3) I ____________________(not go) alone. \n \n \t \t \t a) did not go \n \t \t \t b) don't go \n \t \t \t c) didn't go \n \t \t \t d) not go \n \n 4) My brother _________________(go) with me. \n \n \t \t \t a) went \n \t \t \t b) go \n \t \t \t c) goes \n \t \t \t d) going");
             chat.AppendUserInput("Adapta la siguiente consigna: Resuelva las siguientes ecuaciones:");
             chat.AppendExampleChatbotOutput("RESUELVA la siguiente ecuación: ");
-            chat.AppendUserInput("Adapta el siguiente ejercicio en base a la consigna: Resuelva las siguientes ecuaciones:. El ejercicio es el siguiente: 2 - x = x - 8  3x+1=7  2x+3=9 x+4=15 9-7+x=4");
-            chat.AppendExampleChatbotOutput("1) 2 - x = x - 8 \n 2) 3x + 1 = 7 \n 3) 2x + 3 = 9");
+            chat.AppendUserInput("Adapta el siguiente ejercicio en base a la consigna: Resuelva las siguientes ecuaciones:. El ejercicio es el siguiente: 2 - x = x - 8 ");
+            chat.AppendExampleChatbotOutput("1) 2 - x = x - 8 \n \t \t \t A) x = -5 \n \t \t \t B) x = 5 \n \t \t \t C) x = -3 \n \t \t \t D) x = 3");
 
             // now let's ask it a question'
 
@@ -163,9 +166,10 @@
             // api instance
             var api = new OpenAI_API.OpenAIAPI(_openAIConfiguration.Key);
             var chat = api.Chat.CreateConversation();
+            chat.Model = Model.ChatGPTTurbo;
 
             /// give instruction as System
-            var system = "Sos un " + profesion + " de niños de " + edad + " años. Tenes alumnos con dislexia. Tenes que adaptar ejercicios para ellos. La adaptacion tiene que consistir en simplificar el ejercicio a lo mas escencial para poder seguir respondiendo a las preguntas. Respetar el idioma del ejercicio. No tenes que modificar ningun contenido de nada. Y tampoco tenes que agregar palabaras como Consigna, Ejercicio, Texto, etc. Solo responde con la adaptacion";
+            var system = "Sos un " + profesion + " de niños de " + edad + " años. Tenes alumnos con dislexia. Tenes que adaptar ejercicios para ellos. Tene en cuenta que leer mucho texto hace que sea mas dificil. Para adaptar el ejercicio tenes que leer todo: la consigna, el texto y el ejercicio. De ahi identificar todo el texto necesario para responder al ejercicio. Luego, tenes que acortar el texto para que solo quede el necesario para responder las preguntas. No agregas nada, solo acortas. No agregues palabras extra como Consigna,Ejercicio o Texto. No modifiques nunca el contenido de las oraciones, no agregues adjetivos o palabras, ni tampoco cambies el contenido de las preguntas.";
             chat.AppendSystemMessage(system);
 
             // give a few examples as user and assistant
@@ -200,7 +204,7 @@
                 response = await chat.GetResponseFromChatbotAsync();
                 Console.WriteLine(response);
                 respuesta.Ejercicio = response;
-                pregunta = "El idioma es " + idioma + ".Adapta el siguiente ejercicio en base a la consigna: " + ejercicio.Consigna + ejercicio.Texto + ". El ejercicio es el siguiente: " + ejercicio.Ejercicio;
+                pregunta = "El idioma es " + idioma + ".Adapta el siguiente ejercicio en base a la consigna y al texto siguiente: " + ejercicio.Consigna + ejercicio.Texto + ". El ejercicio es el siguiente: " + ejercicio.Ejercicio;
                 chat.AppendUserInput(pregunta);
                 // and get the response
                 response = await chat.GetResponseFromChatbotAsync();
