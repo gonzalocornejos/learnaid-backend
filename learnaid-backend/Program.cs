@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using learnaid_backend.Core.Integrations.CloudinaryAPI.Interfaces;
 using learnaid_backend.Core.Integrations.CloudinaryAPI;
+using learnaid_backend.Core.Integrations.GoogleCloud.Interfaces;
+using learnaid_backend.Core.Integrations.GoogleCloud;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +60,7 @@ services.AddCors(options =>
 services.AddScoped<IUsuarioService, UsuarioService>();
 services.AddScoped<IEjercicioService, EjercicioService>();
 services.AddScoped<IChatGPTService, ChatGPTService>();
+services.AddScoped<IMobileService, MobileService>();
 
 // Repositories
 services.AddScoped<IGenericRepository, GenericRepository>();
@@ -70,6 +73,8 @@ services.AddScoped<IEjercitacionAdaptadaRepository, EjercitacionAdaptadaReposito
 services.AddScoped<IOpenAIAPI, OpenAIAPI>();
 services.AddScoped<IiText, IText>();
 services.AddScoped<ICloudinaryAPI, CloudinaryAPI>();
+services.AddScoped<IGoogleCloudAPI, GoogleCloudAPI>();
+
 
 // AutoMapper
 
