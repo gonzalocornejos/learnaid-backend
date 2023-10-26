@@ -28,5 +28,6 @@ namespace learnaid_backend.Core.Integrations.CloudinaryAPI
             var result = await cloudinary.UploadAsync(imageParams);
             return result.Url.ToString();
         }
+
     }
 }

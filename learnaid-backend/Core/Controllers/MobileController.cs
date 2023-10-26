@@ -78,12 +78,12 @@ namespace learnaid_backend.Core.Controllers
         /// <response code="204">Si se genero correctamente el audio a partir del texto</response>
         /// <response code="400">Si los parametros se enviaron incorrectamente</response>
         /// <response code="500">En el caso de haber un problema interno en el codigo</response>
-        [HttpPost]
-        [Route("generar-audio")]
+        [HttpGet]
+        [Route("generar-audio/{texto}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<FileResult> GenerarAudio([FromForm] string texto)
+        public async Task<FileResult> GenerarAudio([FromRoute,Required] string texto)
         {
             //if (!ModelState.IsValid)
             //{
